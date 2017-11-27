@@ -1,9 +1,10 @@
-var libxmljs = require('libxmljs')
+const fs = require('fs')
+const libxmljs = require('libxmljs')
 
-function readGLXml (xml) {
-  var xmlDoc = libxmljs.parseXml(xml)
+function readGLXml (dest, xml) {
+  let xmlDoc = libxmljs.parseXml(xml)
 
-  let features = xmlDoc.find('/registry/feature')  
+  let features = xmlDoc.find('/registry/feature')
   let entries = []
   for (let f of features) {
     // console.log(f.attr('name').value())
@@ -43,27 +44,24 @@ function readGLXml (xml) {
   }
 
   let output = JSON.stringify(entries)
-  console.log(output)
-}
-
-function parseData (data) {
-  readGLXml(data)
-}
-
-const fs = require('fs')
-
-function begin (src, onError) {
-  fs.readFile(src, (err, data) => {
-    if (err) onError(err)
-
-    parseData(data)
+  fs.writeFile(dest, output, (err) => {
+    if (err) throw err
+    console.log('The file has been saved!')
   })
 }
 
-begin('./latest/gl.xml', (err) => {
+function begin (src, dest, onError) {
+  fs.readFile(src, (err, data) => {
+    if (err) onError(err)
+
+    readGLXml(dest, data)
+  })
+}
+
+begin('./latest/gl.xml', './latest/gl.json', (err) => {
   console.log(`Using fallback ${err}`)
 
-  begin('./fallback/gl.xml', (e2) => {
+  begin('./fallback/gl.xml', './fallback/gl.json', (e2) => {
     throw e2
   })
 })
