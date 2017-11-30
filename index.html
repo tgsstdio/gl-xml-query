@@ -149,7 +149,7 @@
       function readJSON() {
         // FROM http://youmightnotneedjquery.com/
         let request = new XMLHttpRequest();
-        request.open('GET', 'https://tgsstdio.github.io/gl-xml-query/latest/gl.json', true);
+        request.open('GET', 'latest/gl.json', true);
 
         request.onload = function() {
           if (request.status >= 200 && request.status < 400) {
