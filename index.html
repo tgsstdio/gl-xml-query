@@ -1,25 +1,186 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GL-xml-query</title>
+    <link rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet"
+      href="css/skeleton.css" />
+    <link 
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Barlow+Condensed|Open+Sans"/>
+    <style>
+      h1, h2, h3 {
+        font-family: 'Barlow Condensed', sans-serif;
+      } 
+      body {        
+        font-family: 'Open Sans', sans-serif;
+      }
+      </style>      
+    <title>GL-xml-query</title>    
   </head>
   <body>
-    <h1>GL-xml-query</h1>
-    <a href="https://borderliner.github.io/Meshki/">https://borderliner.github.io/Meshki/</a>
-    <a href="https://bkzl.github.io/hocus-pocus/">https://bkzl.github.io/hocus-pocus/</a>
-    <a href="https://bulma.io/">https://bulma.io/</a>
-    <table>
-      <tr><td style="background-color:#ff3366">Pink</td></tr>
-      <tr><td style="background-color:#ff3860">bulma Danger</td></tr>
-      <tr><td style="background-color:#9a0000">Meshki Crimson</td></tr>      
-      <tr><td style="background-color:#e91e63">Meshki Rose</td></tr>   
-      <tr><td style="background-color:#00e5ff">Meshki Cyan</td></tr>           
-      <tr><td style="background-color:#55acee">Meshki Blue</td></tr>   
-      <tr><td style="background-color:#f9f300">Meshki Yellow</td></tr>  
-      <tr><td style="background-color:#607d8b">Meshki Space</td></tr>  
-      <tr><td style="background-color:#3d9970">hocus-pocus Olive</td></tr>  
-      <tr><td style="background-color:#39cccc">hocus-pocus Teal</td></tr>        
-      <tr><td style="background-color:#001f3f">hocus-pocus navy</td></tr>        
-    </table>
+    <div class="container">
+        <h1>GL-xml-query</h1>
+        <div class="row">    
+          <div class="eleven columns">   
+            <p>Displays all depreciated OpenGL commands and enums w.r.t to OpenGL Core Profile</p>
+            <ul>
+              <li>Latest: <a href="latest/gl.json">gl.json</a> </li>
+              <li><a href="">Github source code</a></li>
+            </ul>           
+          </div>  
+        </div>
+        <h2>Query</h2>
+        <div class="row">
+          <div class="ten columns">
+            <input id="nameFilter" class="nine columns" id="searchTerm" type="search" placeholder="Search for command or enum ..."/>             
+            <select id="typeFilter" class="three columns">
+                <option selected value="all">All</option>
+                <option value="command">Commands only</option>
+                <option value="enum">Enums only</option>
+            </select>            
+          </div>
+          <div class="one column">
+              <input class="button-primary"  type="button" value="Go" onclick="performFilter()" />  
+          </div>           
+        </div>
+        <div class="row">
+            <p class="eleven columns" id="errorMessage"><p>
+        </div>
+        <div id="tableData">
+          <div row "eleven columns">
+            <h3>Results</h3>
+          </div>
+          <div row "eleven columns">
+           <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>                
+                  <th>Depreciated from OpenGL version</th>
+                  <th>Introduced in OpenGL version</th>                    
+                </tr>
+              </thead>      
+              <tbody id="results">
+                <tr>
+                  <td>No data yet<td>
+                </tr>                  
+              </tbody>
+            </table>
+        </div>   
+    </div>
+    <script type="text/javascript">
+      function createTableDataElement(dest, data)
+      {
+        let td0 = document.createElement("td")
+        let text = document.createTextNode(data)
+        td0.appendChild(text)
+        dest.appendChild(td0);
+      } 
+
+      function popErrorMessage(message) {
+        let errorMessage = document.getElementById("errorMessage")
+        if (errorMessage) {          
+          errorMessage.textContent = message
+        }   
+      }
+
+      function createTableRow(results, data)
+      {
+          let dest = document.createElement("tr")        
+          createTableDataElement(dest, data.name)        
+          createTableDataElement(dest, data.type)    
+          createTableDataElement(dest, data.removedAt)    
+          createTableDataElement(dest, data.original)                            
+          results.appendChild(dest)
+      }
+
+      function filterGLInfo(data) {
+        let results = document.getElementById("results")
+        if (results) {          
+          results.innerHTML = ''
+
+          let nameFilter = document.getElementById("nameFilter")              
+
+          let key = ''
+          if (nameFilter) {
+            key = nameFilter.value.toUpperCase()
+          }
+
+          let typeFilter = document.getElementById("typeFilter")
+          
+          let selectedType = 'all'
+          if (typeFilter) {
+            selectedType = typeFilter.value
+          }
+
+          for (let row of data) {                
+
+            let addItem = true
+            if (key != '') {                  
+              if (!row.name.toUpperCase().includes(key))
+                addItem = false
+            }
+
+            if (selectedType != 'all') {
+              if (!(selectedType == row.type))
+                addItem = false
+            }
+
+            if (addItem) {
+              createTableRow(results, row)
+            }
+          }
+        }
+      }
+      
+      var glData = []
+      function performFilter() {
+        hideResults(false)
+        if (glData && glData.length > 0) {
+          filterGLInfo(glData)
+        }
+        else {
+          popErrorMessage("... WAITING ... ")
+        }
+      }
+
+
+      function readJSON() {
+        // FROM http://youmightnotneedjquery.com/
+        let request = new XMLHttpRequest();
+        request.open('GET', '/latest/gl.json', true);
+
+        request.onload = function() {
+          if (request.status >= 200 && request.status < 400) {
+            // Success!
+            glData = JSON.parse(request.responseText);
+          } else {
+            //
+            popErrorMessage("...  We reached our target server, but it returned an error ... ")         
+          }
+        };
+
+        request.onerror = function() {
+          popErrorMessage("... There was a connection error of some sort ... ")
+        };
+
+        request.send();
+      }
+      
+      // MAIN 
+      function hideResults(option) {
+        let el = document.getElementById("tableData")
+        if (el) {
+          if (option)          
+            el.style.display = 'none';
+          else 
+            el.style.display = '';
+        }
+      }
+
+      hideResults(true)
+      readJSON()
+    </script>
   </body>
 </html>

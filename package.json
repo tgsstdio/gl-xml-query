@@ -1,16 +1,23 @@
 {
   "name": "gl-xml-query",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Displays all commands and enums depreciated in OpenGL core profile",
+  "main": "main.js",
   "scripts": {
+    "start": "node main.js",
+    "download": "node ./src/download.js",
+    "parse": "node ./src/parse.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "David Young",
   "license": "ISC",
   "dependencies": {
-    "libxmljs": "^0.18.7",
+    "normalize.css": "^7.0.0",
+    "standard": "^10.0.3",
+    "uglifycss": "0.0.27"
+  },
+  "devDependencies": {
     "save-dev": "^2.0.0",
-    "standard": "^10.0.3"
+    "libxmljs": "^0.18.7"
   }
 }
