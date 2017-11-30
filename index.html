@@ -26,7 +26,7 @@
             <p>Displays all depreciated OpenGL commands and enums w.r.t to OpenGL Core Profile</p>
             <ul>
               <li>Latest: <a href="latest/gl.json">gl.json</a> </li>
-              <li><a href="">Github source code</a></li>
+              <li><a href="https://github.com/tgsstdio/gl-xml-query">Github source code</a></li>
             </ul>           
           </div>  
         </div>
@@ -149,7 +149,7 @@
       function readJSON() {
         // FROM http://youmightnotneedjquery.com/
         let request = new XMLHttpRequest();
-        request.open('GET', '/latest/gl.json', true);
+        request.open('GET', 'latest/gl.json', true);
 
         request.onload = function() {
           if (request.status >= 200 && request.status < 400) {
