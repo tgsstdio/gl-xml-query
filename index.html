@@ -12,9 +12,6 @@
       h1, h2, h3 {
         font-family: 'Barlow Condensed', sans-serif;
       } 
-      body {        
-        font-family: 'Open Sans', sans-serif;
-      }
       </style>      
     <title>GL-xml-query</title>    
   </head>
@@ -22,36 +19,30 @@
     <div class="container">
         <h1>GL-xml-query</h1>
         <div class="row">    
-          <div class="eleven columns">   
-            <p>Displays all depreciated OpenGL commands and enums w.r.t to OpenGL Core Profile</p>
-            <ul>
-              <li>Latest: <a href="latest/gl.json">gl.json</a> </li>
-              <li><a href="https://github.com/tgsstdio/gl-xml-query">Github source code</a></li>
-            </ul>           
-          </div>  
+          <p>Displays all depreciated OpenGL commands and enums w.r.t to OpenGL Core Profile</p>
+          <ul>
+            <li>Latest: <a href="latest/gl.json">gl.json</a> </li>
+            <li><a href="https://github.com/tgsstdio/gl-xml-query">Github source code</a></li>
+          </ul>           
         </div>
         <h2>Query</h2>
         <div class="row">
-          <div class="ten columns">
-            <input id="nameFilter" class="nine columns" id="searchTerm" type="search" placeholder="Search for command or enum ..."/>             
-            <select id="typeFilter" class="three columns">
+            <input id="nameFilter" id="searchTerm" type="search" placeholder="Search for command or enum ..."/>             
+            <select id="typeFilter">
                 <option selected value="all">All</option>
                 <option value="command">Commands only</option>
                 <option value="enum">Enums only</option>
             </select>            
-          </div>
-          <div class="one column">
-              <input class="button-primary"  type="button" value="Go" onclick="performFilter()" />  
-          </div>           
+            <input class="button-primary"  type="button" value="Go" onclick="performFilter()" />          
         </div>
         <div class="row">
-            <p class="eleven columns" id="errorMessage"><p>
+            <p id="errorMessage"><p>
         </div>
         <div id="tableData">
-          <div row "eleven columns">
+          <div class="row">
             <h3>Results</h3>
           </div>
-          <div row "eleven columns">
+          <div class="row tweleve columns">
            <table>
               <thead>
                 <tr>
