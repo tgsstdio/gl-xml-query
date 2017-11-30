@@ -2,6 +2,10 @@
   "name": "gl-xml-query",
   "version": "1.0.0",
   "description": "Displays all commands and enums depreciated in OpenGL core profile",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tgsstdio/gl-xml-query.git"
+  },
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
@@ -10,14 +14,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "David Young",
-  "license": "ISC",
-  "dependencies": {
-    "normalize.css": "^7.0.0",
-    "standard": "^10.0.3",
-    "uglifycss": "0.0.27"
-  },
+  "license": "MIT",
   "devDependencies": {
+    "libxmljs": "^0.18.7",
+    "normalize.css": "^7.0.0",
     "save-dev": "^2.0.0",
-    "libxmljs": "^0.18.7"
-  }
+    "standard": "^10.0.3"
+  },
+  "dependencies": {}
 }
